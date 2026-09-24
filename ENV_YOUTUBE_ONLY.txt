@@ -1,0 +1,31 @@
+# ===== YouTube-only video bot =====
+YOUTUBE_API_ENABLED=true
+YOUTUBE_API_KEY=KEEP_YOUR_EXISTING_KEY
+
+DISCOVERY_QUERIES=animal|funny animals|funny baby|cat and dog|cats|monkeys
+DISCOVERY_RESULTS_PER_QUERY=20
+DISCOVERY_MAX_CANDIDATES=80
+YOUTUBE_SEARCH_ORDER=viewCount
+YOUTUBE_SAFE_SEARCH=none
+YOUTUBE_RELEVANCE_LANGUAGE=en
+
+# Automatic cross-platform reuse-safe default.
+# YouTube supports: creativeCommon / youtube / any.
+YOUTUBE_VIDEO_LICENSE=creativeCommon
+YOUTUBE_REQUIRE_REUSABLE_LICENSE=true
+
+# No bot-side duration restriction. 0 means unlimited.
+DISCOVERY_MIN_DURATION=0
+DISCOVERY_MAX_DURATION=0
+
+# User controls
+VIDEO_POST_COUNT=3
+VIDEO_POST_DELAY_SECONDS=60
+VIDEO_MAX_ATTEMPTS=3
+
+FACEBOOK_PUBLISH_MODE=reel
+DELETE_LOCAL_AFTER_POST=true
+
+# Usually leave blank for public YouTube videos.
+YTDLP_COOKIES_FROM_BROWSER=
+YTDLP_COOKIE_FILE=
