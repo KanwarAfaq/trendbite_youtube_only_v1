@@ -1,4 +1,4 @@
 python-dotenv>=1.0.1
 requests>=2.32.0
 supabase>=2.6.0
-yt-dlp>=2026.8.19
+yt-dlp[default]>=2026.8.19
