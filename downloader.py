@@ -62,6 +62,15 @@ def download_youtube(url: str) -> tuple[str, dict, str]:
         "retries": 3,
         "fragment_retries": 3,
         "source_address": "0.0.0.0",  # Prefer IPv4 on hosted runners.
+        # Prefer clients that currently do not require a PO token, and avoid the
+        # normal webpage request that frequently triggers hosted-runner bot checks.
+        # Metadata/rights checks already come from the YouTube Data API.
+        "extractor_args": {
+            "youtube": {
+                "player_client": ["tv", "android_vr", "web_embedded"],
+                "player_skip": ["webpage"],
+            }
+        },
         "quiet": False,
         **_auth_options(),
     }
