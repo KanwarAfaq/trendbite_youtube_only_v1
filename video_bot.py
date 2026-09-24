@@ -70,9 +70,15 @@ def run(*, post: bool, count: int | None = None, delay: int | None = None) -> di
             considered += 1
             url = meta["source_url"]
             old = store.find_by_source_url(url) or store.find_by_source_identity("youtube", meta["source_content_id"])
-            if old:
-                print(f"history skip: {old.get('status')} {url}")
+            old_status = str((old or {}).get("status") or "").lower()
+            if old and old_status in {"posted", "duplicate"}:
+                print(f"history skip: {old_status} {url}")
                 continue
+            if old and old_status not in {"failed", "discovered", "downloaded"}:
+                print(f"history skip: {old_status or 'unknown'} {url}")
+                continue
+            if old:
+                print(f"history retry: {old_status} {url}")
 
             new_this_attempt += 1
             title = str(meta.get("title") or "")
@@ -87,7 +93,11 @@ def run(*, post: bool, count: int | None = None, delay: int | None = None) -> di
                 continue
 
             rights_status = "licensed" if str(meta.get("source_license") or "").lower() == "creativecommon" else "permission"
-            content = store.create_candidate(meta, rights_status=rights_status)
+            if old:
+                content = old
+                store.update_status(content["id"], "discovered")
+            else:
+                content = store.create_candidate(meta, rights_status=rights_status)
             video_path = None
             try:
                 video_path, _info, digest = download_youtube(url)
