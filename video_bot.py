@@ -163,7 +163,16 @@ def main():
     parser.add_argument("--count", type=int, help="Override VIDEO_POST_COUNT")
     parser.add_argument("--delay", type=int, help="Override VIDEO_POST_DELAY_SECONDS")
     args = parser.parse_args()
-    run(post=bool(args.post), count=args.count, delay=args.delay)
+    summary = run(post=bool(args.post), count=args.count, delay=args.delay)
+
+    # A scheduled posting run is only successful when it reaches its target.
+    # This prevents GitHub Actions from showing green after posting 0/10.
+    if args.post and not summary["success"]:
+        print(
+            f"ERROR: posting target not reached: "
+            f"{summary['posted']}/{summary['target']} successful posts"
+        )
+        raise SystemExit(2)
 
 
 if __name__ == "__main__":
